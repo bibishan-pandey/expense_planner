@@ -26,6 +26,26 @@ class App extends StatelessWidget {
           thickness: 1,
           color: Colors.blue,
         ),
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              headline6: TextStyle(
+                fontFamily: 'OpenSans',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+        appBarTheme: AppBarTheme(
+          textTheme: ThemeData.light().textTheme.copyWith(
+                headline6: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          actionsIconTheme: ThemeData.light().iconTheme.copyWith(
+                color: Colors.white,
+              ),
+        ),
       ),
       home: _HomePage(title: _title),
       debugShowCheckedModeBanner: false,
@@ -97,7 +117,7 @@ class __HomePageState extends State<_HomePage> {
     var uuid = Uuid();
 
     final newTransaction = Transaction(
-      id: uuid.v4().toString(),
+      id: uuid.v4().toString().split('-').join(),
       title: title,
       amount: price,
       dateTime: DateTime.now(),
@@ -115,10 +135,7 @@ class __HomePageState extends State<_HomePage> {
         title: Text(widget.title),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
+            icon: Icon(Icons.add),
             onPressed: () => _showAddTransactionModal(context),
           ),
         ],

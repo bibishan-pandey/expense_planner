@@ -38,11 +38,7 @@ class _AddTransactionState extends State<AddTransaction> {
         children: <Widget>[
           Text(
             'Add a new transaction',
-            style: TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
+            style: Theme.of(context).textTheme.headline6,
           ),
           TextField(
             onSubmitted: (_) => submit(),
