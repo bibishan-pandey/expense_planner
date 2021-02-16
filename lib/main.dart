@@ -17,7 +17,9 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: _title,
       theme: ThemeData(
-        primaryColor: Colors.blue,
+        primarySwatch: Colors.blue,
+        // change dark and light theme
+        // colorScheme: ColorScheme.light(),
         visualDensity: VisualDensity.adaptivePlatformDensity,
         dividerTheme: DividerThemeData(
           space: 5,

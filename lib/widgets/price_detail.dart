@@ -31,11 +31,10 @@ class PriceDetail extends StatelessWidget {
           topLeft: Radius.circular(3),
           bottomLeft: Radius.circular(3),
         ),
-        color: Colors.blue,
         gradient: SweepGradient(colors: [
-          Colors.lightBlueAccent,
-          Colors.lightBlue,
-          Colors.lightBlueAccent
+          Theme.of(context).primaryColor,
+          Theme.of(context).primaryColorDark,
+          Theme.of(context).primaryColor,
         ], stops: [
           0.0,
           0.5,

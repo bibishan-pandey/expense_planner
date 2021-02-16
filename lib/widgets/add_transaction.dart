@@ -78,7 +78,7 @@ class _AddTransactionState extends State<AddTransaction> {
             child: FlatButton(
               onPressed: submit,
               child: Text('Add Expense'),
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               textColor: Colors.white,
             ),
           )
