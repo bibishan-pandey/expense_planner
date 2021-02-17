@@ -3,14 +3,18 @@ import 'package:expense_planner/widgets/price_detail.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseCard extends StatelessWidget {
+  final String id;
   final double amount;
   final String title;
   final DateTime dateTime;
+  final Function onDeleteFunc;
 
   ExpenseCard({
+    @required this.id,
     @required this.amount,
     @required this.title,
     @required this.dateTime,
+    @required this.onDeleteFunc,
   });
 
   @override
@@ -32,7 +36,7 @@ class ExpenseCard extends StatelessWidget {
               icon: Icon(Icons.delete),
               color: Theme.of(context).errorColor,
               iconSize: 30,
-              onPressed: () {},
+              onPressed: () => onDeleteFunc(id),
             ),
           ],
         ),

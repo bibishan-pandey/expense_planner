@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AddTransaction extends StatefulWidget {
   final Function onPressedFunc;
@@ -10,23 +11,45 @@ class AddTransaction extends StatefulWidget {
 }
 
 class _AddTransactionState extends State<AddTransaction> {
-  final titleController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _priceController = TextEditingController();
+  DateTime _inputDateTime;
 
-  final priceController = TextEditingController();
+  void _submit() {
+    if (_priceController.text.isEmpty) return;
 
-  void submit() {
-    final inputTitle = titleController.text;
-    final inputPrice = double.parse(priceController.text);
+    final _inputTitle = _titleController.text;
+    final _inputPrice = double.parse(_priceController.text);
 
-    if (inputTitle.isEmpty || inputPrice <= 0.0 || inputTitle.length > 35) {
+    if (_inputTitle.isEmpty ||
+        _inputPrice <= 0.0 ||
+        _inputTitle.length > 35 ||
+        _inputDateTime == null) {
       return;
     }
 
     widget.onPressedFunc(
-      inputTitle,
-      inputPrice,
+      _inputTitle,
+      _inputPrice,
+      _inputDateTime,
     );
     Navigator.of(context).pop();
+  }
+
+  void _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    ).then((value) {
+      if (value == null) {
+        return;
+      }
+      setState(() {
+        _inputDateTime = value;
+      });
+    });
   }
 
   @override
@@ -41,10 +64,11 @@ class _AddTransactionState extends State<AddTransaction> {
             style: Theme.of(context).textTheme.headline6,
           ),
           TextField(
-            onSubmitted: (_) => submit(),
-            controller: titleController,
+            onSubmitted: (_) => _submit(),
+            controller: _titleController,
             decoration: InputDecoration(
               labelText: 'Expense Name',
+              helperText: 'Expense name should be less than 35 characters',
               hintText: 'E.g. Shoes',
               hintStyle: TextStyle(
                 color: Colors.grey,
@@ -53,8 +77,8 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
           ),
           TextField(
-            onSubmitted: (_) => submit(),
-            controller: priceController,
+            onSubmitted: (_) => _submit(),
+            controller: _priceController,
             decoration: InputDecoration(
               labelText: 'Price',
               hintText: 'E.g. 69.99',
@@ -67,15 +91,45 @@ class _AddTransactionState extends State<AddTransaction> {
               decimal: true,
             ),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(
+                  top: 20,
+                ),
+                child: Text(_inputDateTime == null
+                    ? 'No date chosen'
+                    : DateFormat.yMMMMEEEEd().format(_inputDateTime)),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                ),
+                child: FlatButton(
+                  onPressed: _showDatePicker,
+                  child: Text(
+                    'Choose Date',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  textColor: Theme.of(context).primaryColor,
+                ),
+              ),
+            ],
+          ),
           Container(
             margin: EdgeInsets.only(
               top: 20,
             ),
-            child: FlatButton(
-              onPressed: submit,
+            child: RaisedButton(
+              onPressed: _submit,
               child: Text('Add Expense'),
               color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
+              textColor: Theme.of(context).textTheme.button.color,
+              elevation: 5,
             ),
           )
         ],

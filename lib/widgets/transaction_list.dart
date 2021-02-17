@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function onDeleteFunc;
 
-  TransactionList({@required this.transactions});
+  TransactionList({@required this.transactions, @required this.onDeleteFunc});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 400,
       child: transactions.isEmpty
           ? Column(
               children: <Widget>[
@@ -37,9 +38,11 @@ class TransactionList extends StatelessWidget {
               reverse: true,
               itemBuilder: (ctx, idx) {
                 return ExpenseCard(
+                  id: transactions[idx].id,
                   amount: transactions[idx].amount,
                   title: transactions[idx].title,
                   dateTime: transactions[idx].dateTime,
+                  onDeleteFunc: onDeleteFunc,
                 );
               },
               itemCount: transactions.length,

@@ -33,6 +33,9 @@ class App extends StatelessWidget {
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
+              button: TextStyle(
+                color: Colors.white,
+              ),
             ),
         appBarTheme: AppBarTheme(
           textTheme: ThemeData.light().textTheme.copyWith(
@@ -133,18 +136,25 @@ class __HomePageState extends State<_HomePage> {
     );
   }
 
-  void _addTransaction(String title, double price) {
+  void _addTransaction(String title, double price, DateTime dateTime) {
     var uuid = Uuid();
 
     final newTransaction = Transaction(
       id: uuid.v4().toString().split('-').join(),
       title: title,
       amount: price,
-      dateTime: DateTime.now(),
+      dateTime: dateTime,
     );
 
     setState(() {
       _transactions.add(newTransaction);
+    });
+  }
+
+  void _removeTransaction(String id) {
+    if (id == null) return;
+    setState(() {
+      _transactions.removeWhere((element) => element.id == id);
     });
   }
 
@@ -168,6 +178,7 @@ class __HomePageState extends State<_HomePage> {
             ),
             TransactionList(
               transactions: _transactions,
+              onDeleteFunc: _removeTransaction,
             ),
           ],
         ),
