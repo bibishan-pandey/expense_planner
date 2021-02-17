@@ -11,6 +11,8 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitUp,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
   ]);
   runApp(App());
 }
@@ -133,8 +135,10 @@ class __HomePageState extends State<_HomePage> {
       builder: (builderContext) {
         return GestureDetector(
           onTap: () {},
-          child: AddTransaction(
-            onPressedFunc: _addTransaction,
+          child: SingleChildScrollView(
+            child: AddTransaction(
+              onPressedFunc: _addTransaction,
+            ),
           ),
           behavior: HitTestBehavior.opaque,
         );
@@ -164,6 +168,8 @@ class __HomePageState extends State<_HomePage> {
     });
   }
 
+  bool _toggleSwitchChart = true;
+
   @override
   Widget build(BuildContext context) {
     _transactions.sort((a, b) => a.dateTime.compareTo(b.dateTime));
@@ -171,6 +177,15 @@ class __HomePageState extends State<_HomePage> {
     var appBar = AppBar(
       title: Text(widget.title),
       actions: <Widget>[
+        Switch(
+          value: _toggleSwitchChart,
+          onChanged: (value) {
+            setState(() {
+              _toggleSwitchChart = value;
+            });
+          },
+          activeColor: Colors.white,
+        ),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () => _showAddTransactionModal(context),
@@ -182,15 +197,21 @@ class __HomePageState extends State<_HomePage> {
       appBar: appBar,
       body: Column(
         children: <Widget>[
-          Flexible(
-            fit: FlexFit.loose,
-            child: Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.3,
-              child: Chart(
-                transactions: _weeklyTransactions,
+          Visibility(
+            visible: _toggleSwitchChart,
+            child: Flexible(
+              flex: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 1
+                  : 3,
+              fit: FlexFit.loose,
+              child: Container(
+                height: (MediaQuery.of(context).size.height -
+                        appBar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    1,
+                child: Chart(
+                  transactions: _weeklyTransactions,
+                ),
               ),
             ),
           ),

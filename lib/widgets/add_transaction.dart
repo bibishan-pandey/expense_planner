@@ -56,7 +56,12 @@ class _AddTransactionState extends State<AddTransaction> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.only(
+        top: 20,
+        bottom: 20 + MediaQuery.of(context).viewInsets.bottom,
+        left: 16,
+        right: 16,
+      ),
       child: Column(
         children: <Widget>[
           Text(

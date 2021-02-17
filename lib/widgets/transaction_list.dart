@@ -14,9 +14,12 @@ class TransactionList extends StatelessWidget {
       return Container(
         child: transactions.isEmpty
             ? Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
                     height: constraints.maxHeight * 0.05,
+                    width: constraints.maxWidth,
                   ),
                   Flexible(
                     child: Text(
@@ -26,9 +29,10 @@ class TransactionList extends StatelessWidget {
                   ),
                   SizedBox(
                     height: constraints.maxHeight * 0.05,
+                    width: constraints.maxWidth,
                   ),
                   Container(
-                    height: constraints.maxHeight * 0.60,
+                    height: constraints.maxHeight * 0.55,
                     child: Image.asset(
                       'assets/images/waiting.png',
                       fit: BoxFit.cover,
@@ -37,6 +41,10 @@ class TransactionList extends StatelessWidget {
                 ],
               )
             : ListView.builder(
+                padding: EdgeInsets.only(
+                  top: 16,
+                  bottom: 16,
+                ),
                 itemBuilder: (ctx, idx) {
                   return ExpenseCard(
                     id: transactions[idx].id,
