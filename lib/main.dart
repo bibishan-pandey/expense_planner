@@ -70,33 +70,41 @@ class __HomePageState extends State<_HomePage> {
       id: '513c9f180b3934d08ef2a0e7fa5ae96f',
       title: 'Shoes',
       amount: 69.99,
-      dateTime: DateTime.now(),
+      dateTime: DateTime.now().subtract(Duration(days: 2)),
     ),
     Transaction(
       id: 'ce5a1a3d70df73cf83042be491d5f895',
       title: 'Jacket',
       amount: 59.99,
-      dateTime: DateTime.now(),
+      dateTime: DateTime.now().subtract(Duration(days: 3)),
     ),
     Transaction(
       id: '81108597c07f13a51a83417f715a474c',
       title: 'Pant',
       amount: 44.99,
-      dateTime: DateTime.now(),
+      dateTime: DateTime.now().subtract(Duration(days: 1)),
     ),
     Transaction(
       id: '6807198c928eed879f3766d49954e92b',
       title: 'Google',
       amount: 29.99,
-      dateTime: DateTime.now(),
+      dateTime: DateTime.now().subtract(Duration(days: 4)),
     ),
     Transaction(
       id: 'a4be1280e0b263f8acf6bed3a9303959',
       title: 'Shirt',
       amount: 19.99,
-      dateTime: DateTime.now(),
+      dateTime: DateTime.now().subtract(Duration(days: 5)),
     ),
   ];
+
+  List<Transaction> get _weeklyTransactions {
+    return _transactions.where((transaction) {
+      return transaction.dateTime.isAfter(DateTime.now().subtract(Duration(
+        days: 7,
+      )));
+    }).toList();
+  }
 
   void _showAddTransactionModal(BuildContext context) {
     showModalBottomSheet(
@@ -143,7 +151,9 @@ class __HomePageState extends State<_HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Chart(),
+            Chart(
+              transactions: _weeklyTransactions,
+            ),
             TransactionList(
               transactions: _transactions,
             ),
