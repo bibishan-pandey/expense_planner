@@ -96,6 +96,18 @@ class __HomePageState extends State<_HomePage> {
       amount: 19.99,
       dateTime: DateTime.now().subtract(Duration(days: 5)),
     ),
+    Transaction(
+      id: 'a4be1280e0b263f8acf6bed3a9303939',
+      title: 'Groceries',
+      amount: 39.99,
+      dateTime: DateTime.now().subtract(Duration(days: 6)),
+    ),
+    Transaction(
+      id: 'a4be1280e0b263f8acf6bed3a9303989',
+      title: 'Charger',
+      amount: 29.99,
+      dateTime: DateTime.now().subtract(Duration(days: 7)),
+    ),
   ];
 
   List<Transaction> get _weeklyTransactions {

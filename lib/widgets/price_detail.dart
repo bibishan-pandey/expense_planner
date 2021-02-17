@@ -17,16 +17,21 @@ class PriceDetail extends StatelessWidget {
           Text(
             '\$',
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 40,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
-          Text(
-            '$amount',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white,
+          Flexible(
+            fit: FlexFit.tight,
+            child: FittedBox(
+              child: Text(
+                '${amount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],

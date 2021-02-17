@@ -34,6 +34,7 @@ class TransactionList extends StatelessWidget {
               ],
             )
           : ListView.builder(
+              reverse: true,
               itemBuilder: (ctx, idx) {
                 return ExpenseCard(
                   amount: transactions[idx].amount,

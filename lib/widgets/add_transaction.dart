@@ -18,7 +18,7 @@ class _AddTransactionState extends State<AddTransaction> {
     final inputTitle = titleController.text;
     final inputPrice = double.parse(priceController.text);
 
-    if (inputTitle.isEmpty || inputPrice <= 0.0) {
+    if (inputTitle.isEmpty || inputPrice <= 0.0 || inputTitle.length > 35) {
       return;
     }
 

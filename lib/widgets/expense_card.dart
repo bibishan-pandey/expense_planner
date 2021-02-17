@@ -21,9 +21,18 @@ class ExpenseCard extends StatelessWidget {
         child: Row(
           children: <Widget>[
             PriceDetail(amount: amount),
-            CardDetail(
-              title: title,
-              dateTime: dateTime,
+            Flexible(
+              fit: FlexFit.tight,
+              child: CardDetail(
+                title: title,
+                dateTime: dateTime,
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              color: Theme.of(context).errorColor,
+              iconSize: 30,
+              onPressed: () {},
             ),
           ],
         ),

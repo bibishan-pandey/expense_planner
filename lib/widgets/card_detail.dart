@@ -14,17 +14,32 @@ class CardDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
+        Container(
+          padding: EdgeInsets.only(
+            right: 10,
+          ),
+          child: FittedBox(
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
-        Text(
-          DateFormat.yMMMMEEEEd().format(dateTime),
-          style: TextStyle(
-            color: Colors.grey,
+        Container(
+          padding: EdgeInsets.only(
+            right: 10,
+          ),
+          child: FittedBox(
+            child: Text(
+              DateFormat.yMMMMEEEEd().format(dateTime),
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+              ),
+            ),
           ),
         ),
       ],
