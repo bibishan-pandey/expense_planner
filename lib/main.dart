@@ -17,7 +17,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: _title,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
         // change dark and light theme
         // colorScheme: ColorScheme.light(),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -97,13 +97,13 @@ class __HomePageState extends State<_HomePage> {
       dateTime: DateTime.now().subtract(Duration(days: 5)),
     ),
     Transaction(
-      id: 'a4be1280e0b263f8acf6bed3a9303939',
+      id: 'b4be1280e0b263f8acf6bed3a9303939',
       title: 'Groceries',
       amount: 39.99,
       dateTime: DateTime.now().subtract(Duration(days: 6)),
     ),
     Transaction(
-      id: 'a4be1280e0b263f8acf6bed3a9303989',
+      id: 'c4be1280e0b263f8acf6bed3a9303989',
       title: 'Charger',
       amount: 29.99,
       dateTime: DateTime.now().subtract(Duration(days: 7)),

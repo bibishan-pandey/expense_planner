@@ -26,10 +26,11 @@ class ChartInfo extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     FittedBox(
                       child: Text(
-                        '7 Days Transaction Summary \nIn Reverse Days Order',
+                        '7 Days Transaction Summary',
                         style: TextStyle(
                           color: Theme.of(context).primaryColorDark,
                         ),
