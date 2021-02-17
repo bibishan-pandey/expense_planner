@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -37,19 +40,55 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   void _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    ).then((value) {
-      if (value == null) {
-        return;
-      }
-      setState(() {
-        _inputDateTime = value;
-      });
-    });
+    Platform.isIOS
+        ? showCupertinoModalPopup(
+            context: context,
+            builder: (_) => Container(
+                  height: 500,
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 400,
+                        child: CupertinoDatePicker(
+                            mode: CupertinoDatePickerMode.date,
+                            initialDateTime: DateTime.now(),
+                            maximumDate: DateTime.now(),
+                            maximumYear: DateTime.now().year,
+                            minimumDate: DateTime(2000),
+                            onDateTimeChanged: (value) {
+                              setState(() {
+                                _inputDateTime = value;
+                              });
+                            }),
+                      ),
+                      CupertinoButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          if (_inputDateTime == null) {
+                            setState(() {
+                              _inputDateTime = DateTime.now();
+                            });
+                          }
+                          return Navigator.of(context).pop();
+                        },
+                      )
+                    ],
+                  ),
+                ))
+        : showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime.now(),
+          ).then((value) {
+            if (value == null) {
+              return;
+            }
+            setState(() {
+              _inputDateTime = value;
+            });
+          });
   }
 
   @override
@@ -57,44 +96,87 @@ class _AddTransactionState extends State<AddTransaction> {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.only(
-        top: 20,
+        top: 20 + MediaQuery.of(context).viewInsets.top,
         bottom: 20 + MediaQuery.of(context).viewInsets.bottom,
         left: 16,
         right: 16,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(
             'Add a new transaction',
             style: Theme.of(context).textTheme.headline6,
           ),
-          TextField(
-            onSubmitted: (_) => _submit(),
-            controller: _titleController,
-            decoration: InputDecoration(
-              labelText: 'Expense Name',
-              helperText: 'Expense name should be less than 35 characters',
-              hintText: 'E.g. Shoes',
-              hintStyle: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w400,
-              ),
+          Container(
+            margin: EdgeInsets.only(
+              top: 10,
+              bottom: 10,
             ),
+            child: Platform.isIOS
+                ? CupertinoTextField(
+                    controller: _titleController,
+                    maxLength: 34,
+                    onSubmitted: (_) => _submit(),
+                    placeholder: 'Expense Name',
+                    padding: EdgeInsets.only(
+                      top: 10,
+                      bottom: 10,
+                      left: 16,
+                      right: 16,
+                    ),
+                  )
+                : TextField(
+                    onSubmitted: (_) => _submit(),
+                    controller: _titleController,
+                    decoration: InputDecoration(
+                      labelText: 'Expense Name',
+                      helperText:
+                          'Expense name should be less than 35 characters',
+                      hintText: 'E.g. Shoes',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
           ),
-          TextField(
-            onSubmitted: (_) => _submit(),
-            controller: _priceController,
-            decoration: InputDecoration(
-              labelText: 'Price',
-              hintText: 'E.g. 69.99',
-              hintStyle: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.w400,
-              ),
+          Container(
+            margin: EdgeInsets.only(
+              top: 10,
+              bottom: 10,
             ),
-            keyboardType: TextInputType.numberWithOptions(
-              decimal: true,
-            ),
+            child: Platform.isIOS
+                ? CupertinoTextField(
+                    controller: _priceController,
+                    maxLength: 34,
+                    onSubmitted: (_) => _submit(),
+                    placeholder: 'Price',
+                    keyboardType: TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                    padding: EdgeInsets.only(
+                      top: 10,
+                      bottom: 10,
+                      left: 16,
+                      right: 16,
+                    ),
+                  )
+                : TextField(
+                    onSubmitted: (_) => _submit(),
+                    controller: _priceController,
+                    decoration: InputDecoration(
+                      labelText: 'Price',
+                      hintText: 'E.g. 69.99',
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    keyboardType: TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
+                  ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -112,30 +194,52 @@ class _AddTransactionState extends State<AddTransaction> {
                   top: 20,
                   left: 20,
                 ),
-                child: FlatButton(
-                  onPressed: _showDatePicker,
-                  child: Text(
-                    'Choose Date',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  textColor: Theme.of(context).primaryColor,
-                ),
+                child: Platform.isIOS
+                    ? CupertinoButton(
+                        onPressed: _showDatePicker,
+                        child: Text(
+                          'Choose Date',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    : FlatButton(
+                        onPressed: _showDatePicker,
+                        child: Text(
+                          'Choose Date',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        textColor: Theme.of(context).primaryColor,
+                      ),
               ),
             ],
           ),
           Container(
             margin: EdgeInsets.only(
               top: 20,
+              bottom: 20,
             ),
-            child: RaisedButton(
-              onPressed: _submit,
-              child: Text('Add Expense'),
-              color: Theme.of(context).primaryColor,
-              textColor: Theme.of(context).textTheme.button.color,
-              elevation: 5,
-            ),
+            child: Platform.isIOS
+                ? CupertinoButton(
+                    onPressed: _submit,
+                    child: Text(
+                      'Add Expense',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    color: Theme.of(context).primaryColor,
+                  )
+                : RaisedButton(
+                    onPressed: _submit,
+                    child: Text('Add Expense'),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).textTheme.button.color,
+                    elevation: 5,
+                  ),
           )
         ],
         crossAxisAlignment: CrossAxisAlignment.start,

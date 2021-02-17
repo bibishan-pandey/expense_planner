@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:expense_planner/widgets/card_detail.dart';
 import 'package:expense_planner/widgets/price_detail.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExpenseCard extends StatelessWidget {
@@ -19,6 +22,30 @@ class ExpenseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cupertinoDeleteBtn = CupertinoButton(
+      onPressed: () => onDeleteFunc(id),
+      child: Icon(
+        CupertinoIcons.delete,
+        size: 30,
+        color: Theme.of(context).errorColor,
+      ),
+    );
+    var landscapeIcon = Platform.isIOS
+        ? cupertinoDeleteBtn
+        : FlatButton.icon(
+            icon: Icon(Icons.delete),
+            textColor: Theme.of(context).errorColor,
+            label: Text('Delete'),
+            onPressed: () => onDeleteFunc(id),
+          );
+    var portraitIcon = Platform.isIOS
+        ? cupertinoDeleteBtn
+        : IconButton(
+            icon: Icon(Icons.delete),
+            color: Theme.of(context).errorColor,
+            iconSize: 30,
+            onPressed: () => onDeleteFunc(id),
+          );
     return Card(
       child: Container(
         width: double.infinity,
@@ -33,18 +60,8 @@ class ExpenseCard extends StatelessWidget {
               ),
             ),
             MediaQuery.of(context).size.width > 460
-                ? FlatButton.icon(
-                    icon: Icon(Icons.delete),
-                    textColor: Theme.of(context).errorColor,
-                    label: Text('Delete'),
-                    onPressed: () => onDeleteFunc(id),
-                  )
-                : IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Theme.of(context).errorColor,
-                    iconSize: 30,
-                    onPressed: () => onDeleteFunc(id),
-                  ),
+                ? landscapeIcon
+                : portraitIcon,
           ],
         ),
       ),

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:expense_planner/models/transaction.dart';
 import 'package:expense_planner/widgets/add_transaction.dart';
 import 'package:expense_planner/widgets/chart.dart';
 import 'package:expense_planner/widgets/transaction_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
@@ -25,7 +28,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: _title,
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
         // change dark and light theme
         // colorScheme: ColorScheme.light(),
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -132,6 +135,8 @@ class __HomePageState extends State<_HomePage> {
   void _showAddTransactionModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
+      elevation: 5,
       builder: (builderContext) {
         return GestureDetector(
           onTap: () {},
@@ -174,28 +179,47 @@ class __HomePageState extends State<_HomePage> {
   Widget build(BuildContext context) {
     _transactions.sort((a, b) => a.dateTime.compareTo(b.dateTime));
 
-    var appBar = AppBar(
-      title: Text(widget.title),
-      actions: <Widget>[
-        Switch(
-          value: _toggleSwitchChart,
-          onChanged: (value) {
-            setState(() {
-              _toggleSwitchChart = value;
-            });
-          },
-          activeColor: Colors.white,
-        ),
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _showAddTransactionModal(context),
-        ),
-      ],
+    var _switch = Switch.adaptive(
+      value: _toggleSwitchChart,
+      onChanged: (value) {
+        setState(() {
+          _toggleSwitchChart = value;
+        });
+      },
+      activeColor: Theme.of(context).accentColor,
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: Column(
+    final PreferredSizeWidget appBar = Platform.isIOS
+        ? CupertinoNavigationBar(
+            middle: Text(widget.title),
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _switch,
+                GestureDetector(
+                  onTap: () => _showAddTransactionModal(context),
+                  child: Icon(
+                    CupertinoIcons.add,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+              ],
+            ),
+          )
+        : AppBar(
+            title: Text(widget.title),
+            actions: <Widget>[
+              _switch,
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _showAddTransactionModal(context),
+              ),
+            ],
+          );
+
+    var body = SafeArea(
+      child: Column(
         children: <Widget>[
           Visibility(
             visible: _toggleSwitchChart,
@@ -203,7 +227,7 @@ class __HomePageState extends State<_HomePage> {
               flex: MediaQuery.of(context).orientation == Orientation.portrait
                   ? 1
                   : 3,
-              fit: FlexFit.loose,
+              fit: FlexFit.tight,
               child: Container(
                 height: (MediaQuery.of(context).size.height -
                         appBar.preferredSize.height -
@@ -231,10 +255,22 @@ class __HomePageState extends State<_HomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _showAddTransactionModal(context),
-      ),
     );
+
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: appBar,
+            child: body,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: body,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _showAddTransactionModal(context),
+                  ),
+          );
   }
 }
