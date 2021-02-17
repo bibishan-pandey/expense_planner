@@ -13,53 +13,62 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 20,
-          child: FittedBox(
-            child: Text('\$${amount.toStringAsFixed(0)}'),
-          ),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-          height: 60,
-          width: 5,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).primaryColor,
-                    width: 1,
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(3),
-                ),
+    return LayoutBuilder(
+      builder: (ctx, constraints) {
+        return Column(
+          children: <Widget>[
+            Container(
+              height: constraints.maxHeight * 0.15,
+              child: FittedBox(
+                child: Text('\$${amount.toStringAsFixed(0)}'),
               ),
-              FractionallySizedBox(
-                heightFactor: 1 - amountPercentage,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).primaryColor,
-                      width: 1,
+            ),
+            SizedBox(
+              height: constraints.maxHeight * 0.05,
+            ),
+            Container(
+              height: constraints.maxHeight * 0.6,
+              width: 5,
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).primaryColorDark,
+                        width: 1,
+                      ),
+                      color: Theme.of(context).primaryColorDark,
+                      // borderRadius: BorderRadius.circular(3),
                     ),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(3),
                   ),
-                ),
+                  FractionallySizedBox(
+                    heightFactor: 1 - amountPercentage,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                          width: 1,
+                        ),
+                        color: Theme.of(context).primaryColorLight,
+                        // borderRadius: BorderRadius.circular(0),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Text(day),
-      ],
+            ),
+            SizedBox(
+              height: constraints.maxHeight * 0.05,
+            ),
+            Container(
+              height: constraints.maxHeight * 0.15,
+              child: FittedBox(
+                child: Text(day),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

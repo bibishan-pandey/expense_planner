@@ -36,33 +36,35 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(side: BorderSide.none),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ..._groupedTransactionValue.map((transaction) {
-                  return Flexible(
-                    fit: FlexFit.tight,
-                    child: ChartBar(
-                      day: transaction['day'],
-                      amount: transaction['amount'],
-                      amountPercentage: _totalWeeklySpending == 0.0
-                          ? 0.0
-                          : (transaction['amount'] as double) /
-                              _totalWeeklySpending,
-                    ),
-                  );
-                }).toList(),
-              ],
+          Flexible(
+            fit: FlexFit.tight,
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  ..._groupedTransactionValue.map((transaction) {
+                    return Flexible(
+                      fit: FlexFit.tight,
+                      child: ChartBar(
+                        day: transaction['day'],
+                        amount: transaction['amount'],
+                        amountPercentage: _totalWeeklySpending == 0.0
+                            ? 0.0
+                            : (transaction['amount'] as double) /
+                                _totalWeeklySpending,
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: 10,
           ),
           ChartInfo(
             amount: _totalWeeklySpending,
@@ -71,10 +73,10 @@ class Chart extends StatelessWidget {
       ),
       elevation: 5,
       margin: EdgeInsets.only(
-        left: 16,
-        right: 16,
-        top: 10,
-        bottom: 10,
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
       ),
     );
   }

@@ -10,44 +10,46 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,
-      child: transactions.isEmpty
-          ? Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'No transactions added yet!',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 200,
-                  child: Image.asset(
-                    'assets/images/waiting.png',
-                    fit: BoxFit.cover,
+    return LayoutBuilder(builder: (ctx, constraints) {
+      return Container(
+        child: transactions.isEmpty
+            ? Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: constraints.maxHeight * 0.05,
                   ),
-                ),
-              ],
-            )
-          : ListView.builder(
-              reverse: true,
-              itemBuilder: (ctx, idx) {
-                return ExpenseCard(
-                  id: transactions[idx].id,
-                  amount: transactions[idx].amount,
-                  title: transactions[idx].title,
-                  dateTime: transactions[idx].dateTime,
-                  onDeleteFunc: onDeleteFunc,
-                );
-              },
-              itemCount: transactions.length,
-            ),
-    );
+                  Flexible(
+                    child: Text(
+                      'No transactions added yet!',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ),
+                  SizedBox(
+                    height: constraints.maxHeight * 0.05,
+                  ),
+                  Container(
+                    height: constraints.maxHeight * 0.60,
+                    child: Image.asset(
+                      'assets/images/waiting.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              )
+            : ListView.builder(
+                itemBuilder: (ctx, idx) {
+                  return ExpenseCard(
+                    id: transactions[idx].id,
+                    amount: transactions[idx].amount,
+                    title: transactions[idx].title,
+                    dateTime: transactions[idx].dateTime,
+                    onDeleteFunc: onDeleteFunc,
+                  );
+                },
+                itemCount: transactions.length,
+              ),
+      );
+    });
   }
 }
 

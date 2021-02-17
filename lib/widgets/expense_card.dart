@@ -46,7 +46,6 @@ class ExpenseCard extends StatelessWidget {
         left: 16,
         right: 16,
         top: 10,
-        bottom: 10,
       ),
     );
   }

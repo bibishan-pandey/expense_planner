@@ -3,9 +3,15 @@ import 'package:expense_planner/widgets/add_transaction.dart';
 import 'package:expense_planner/widgets/chart.dart';
 import 'package:expense_planner/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(App());
 }
 
@@ -160,28 +166,49 @@ class __HomePageState extends State<_HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _transactions.sort((a, b) => a.dateTime.compareTo(b.dateTime));
+
+    var appBar = AppBar(
+      title: Text(widget.title),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _showAddTransactionModal(context),
+        ),
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _showAddTransactionModal(context),
+      appBar: appBar,
+      body: Column(
+        children: <Widget>[
+          Flexible(
+            fit: FlexFit.loose,
+            child: Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.3,
+              child: Chart(
+                transactions: _weeklyTransactions,
+              ),
+            ),
+          ),
+          Flexible(
+            flex: 2,
+            fit: FlexFit.tight,
+            child: Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.7,
+              child: TransactionList(
+                transactions: _transactions.reversed.toList(),
+                onDeleteFunc: _removeTransaction,
+              ),
+            ),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Chart(
-              transactions: _weeklyTransactions,
-            ),
-            TransactionList(
-              transactions: _transactions,
-              onDeleteFunc: _removeTransaction,
-            ),
-          ],
-        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
