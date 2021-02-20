@@ -18,5 +18,5 @@ samples, guidance on mobile development, and a full API reference.
 ## demo and theme video
 <div>
   <img src="https://github.com/bibishan-pandey/expense_planner/blob/master/assets/demos/Expense%20Planner.gif" width="25%" height="25%">
-  <img src="https://github.com/bibishan-pandey/expense_planner/blob/master/assets/demos/Expense%20Planner%20Theme.gif" width="25%" height="25%">
+  <img src="https://github.com/bibishan-pandey/expense_planner/blob/master/assets/demos/Expense%20Planner%20Theme.gif" width="75%" height="75%">
 </div>
